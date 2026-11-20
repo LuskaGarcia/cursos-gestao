@@ -84,7 +84,31 @@ async function login({ email, senha }) {
   };
 }
 
+async function buscarPerfil(idColaborador) {
+  const colaborador = await prisma.colaborador.findUnique({
+    where: {
+      id_colaborador: idColaborador,
+    },
+    select: {
+      id_colaborador: true,
+      nome: true,
+      cpf: true,
+      email: true,
+      data_admissao: true,
+      cargo_atual: true,
+      setor: true,
+    },
+  });
+
+  if (!colaborador) {
+    throw new AppError('Colaborador não encontrado.', 404);
+  }
+
+  return colaborador;
+}
+
 module.exports = {
   register,
   login,
+  buscarPerfil,
 };

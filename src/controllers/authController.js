@@ -23,7 +23,20 @@ async function login(req, res, next) {
   }
 }
 
+async function me(req, res, next) {
+  try {
+    const colaborador = await authService.buscarPerfil(req.user.id_colaborador);
+
+    return res.status(200).json({
+      colaborador,
+    });
+  } catch (error) {
+    return next(error);
+  }
+}
+
 module.exports = {
   register,
   login,
+  me,
 };
