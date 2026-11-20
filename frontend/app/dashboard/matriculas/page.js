@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { getMyEnrollments } from '@/lib/api';
 import { formatDate, formatProgress } from '@/lib/format';
 
@@ -44,6 +45,41 @@ export default async function MatriculasPage() {
       ) : (
         <div className="empty">Você ainda não possui matrículas.</div>
       )}
+
+      <div className="grid enrollment-help">
+        <section className="card" aria-labelledby="enrollment-faq-title">
+          <h2 id="enrollment-faq-title">Perguntas frequentes</h2>
+
+          <details>
+            <summary>Como faço minha matrícula?</summary>
+            <p>
+              Acesse <Link href="/dashboard/cursos">Cursos</Link>, abra o curso
+              desejado e use o botão de matrícula na página do curso.
+            </p>
+          </details>
+
+          <details>
+            <summary>Como acompanho meu progresso?</summary>
+            <p>
+              Em Minhas matrículas, cada curso mostra a situação da matrícula,
+              o percentual de progresso e a data de conclusão, quando disponível.
+            </p>
+          </details>
+
+          <details>
+            <summary>Onde encontro meus certificados?</summary>
+            <p>
+              Acesse <Link href="/dashboard/certificados">Certificados</Link>{' '}
+              no menu para consultar os documentos já emitidos.
+            </p>
+          </details>
+        </section>
+
+        <section className="card" aria-labelledby="enrollment-contact-title">
+          <h2 id="enrollment-contact-title">Contato</h2>
+          <span className="enrollment-contact-email">matriculas@cursosgestao.com</span>
+        </section>
+      </div>
     </>
   );
 }
