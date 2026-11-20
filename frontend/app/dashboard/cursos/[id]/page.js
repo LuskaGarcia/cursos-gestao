@@ -1,11 +1,14 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import EnrollmentButton from '@/components/enrollment-button';
+import { deleteCourseAction } from '@/app/actions/cursos';
 import { ApiError, getCourse } from '@/lib/api';
 
 export const dynamic = 'force-dynamic';
 
-export default async function CursoDetalhePage({ params }) {
+export default async function CursoDetalhePage({ params, searchParams }) {
   const { id } = await params;
+  const query = await searchParams;
 
   let course;
 
@@ -18,6 +21,8 @@ export default async function CursoDetalhePage({ params }) {
 
     throw error;
   }
+
+  const deleteAction = deleteCourseAction.bind(null, id);
 
   return (
     <>
@@ -35,8 +40,15 @@ export default async function CursoDetalhePage({ params }) {
           >
             Editar
           </Link>
+          <form action={deleteAction}>
+            <button className="button danger" type="submit">
+              Excluir
+            </button>
+          </form>
         </div>
       </div>
+
+      {query?.erro ? <p className="notice error">{query.erro}</p> : null}
 
       <section className="grid cards">
         <div className="card">
@@ -56,6 +68,14 @@ export default async function CursoDetalhePage({ params }) {
       <section className="card" style={{ marginTop: '1rem' }}>
         <h2>Conteúdo programático</h2>
         <p>{course.conteudo_programatico}</p>
+      </section>
+
+      <section className="card" style={{ marginTop: '1rem' }}>
+        <h2>Matrícula</h2>
+        <p className="muted">
+          A matrícula utiliza o id do colaborador extraído do JWT no back-end.
+        </p>
+        <EnrollmentButton courseId={course.id_curso} />
       </section>
     </>
   );
